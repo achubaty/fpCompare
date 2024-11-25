@@ -30,12 +30,12 @@ jobs:
           - {os: windows-latest, r: '4.1'}
           - {os: windows-latest, r: '4.0'}
           - {os: windows-latest, r: '3.6'}
-          - {os: ubuntu-20.04, r: 'devel'}
-          - {os: ubuntu-20.04, r: 'release'}
-          - {os: ubuntu-20.04, r: 'oldrel'}
-          - {os: ubuntu-20.04, r: '4.1'}
-          - {os: ubuntu-20.04, r: '4.0'}
-          - {os: ubuntu-20.04, r: '3.6'}
+          - {os: ubuntu-latest, r: 'devel'}
+          - {os: ubuntu-latest, r: 'release'}
+          - {os: ubuntu-latest, r: 'oldrel'}
+          - {os: ubuntu-latest, r: '4.1'}
+          - {os: ubuntu-latest, r: '4.0'}
+          - {os: ubuntu-latest, r: '3.6'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -57,15 +57,5 @@ jobs:
             any::rcmdcheck
 
       - uses: r-lib/actions/check-r-package@v2
-
-      - name: Show testthat output
-        if: always()
-        run: find check -name 'testthat.Rout*' -exec cat '{}' \; || true
-        shell: bash
-
-      - name: Upload check results
-        if: failure()
-        uses: actions/upload-artifact@main
         with:
-          name: ${{ runner.os }}-r${{ matrix.config.r }}-results
-          path: check
+          upload-snapshots: true
